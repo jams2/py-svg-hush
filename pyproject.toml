@@ -10,6 +10,12 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: PyPy",
 ]
 
+[project.urls]
+homepage = "https://github.com/jams2/py-svg-hush"
+documentation = "https://github.com/jams2/py-svg-hush"
+repository = "https://github.com/jams2/py-svg-hush"
+changelog = "https://github.com/jams2/py-svg-hush/blob/main/CHANGELOG.md"
+
 [project.optional-dependencies]
 dev = [
     "maturin ~= 0.14.16",
