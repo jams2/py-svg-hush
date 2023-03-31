@@ -1,0 +1,49 @@
+[project]
+name = "py_svg_hush"
+authors = [
+    {name = "Joshua Munn", email = "public@elysee-munn.family"},
+]
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Rust",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+]
+
+[project.optional-dependencies]
+dev = [
+    "maturin ~= 0.14.16",
+    "black ~= 23.1.0",
+    "ruff ~= 0.0.256",
+]
+testing = ["pytest ~= 7.2.2"]
+
+[tool.ruff]
+target-version = "py37"
+line-length = 88
+src = ["src", "tests"]
+select = [
+    "E",   # pycodestyle
+    "F",   # pyflakes
+    "UP",  # pyupgrade
+    "I",   # isort
+    "ARG", # unused arguments
+    "PT",  # pytest style
+    "T10", # flake8-debugger
+    "C4",  # flake8-comprehensions
+]
+ignore = [
+    "UP007",  # use X | Y
+    "UP006",  # use dict, list instead of Dict, List
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+minversion = 7.0
+
+[build-system]
+requires = ["maturin>=0.14,<0.15"]
+build-backend = "maturin"
+
+[tool.maturin]
+features = ["pyo3/extension-module"]
