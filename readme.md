@@ -21,22 +21,22 @@ svg_bytes = b"""
 </svg>
 """
 
-keep_data_uri_mime_types = {
+keep_data_url_mime_types = {
     "image": ["jpeg", "png", "gif"],
 }
 
-sanitized_svg = filter_svg(svg_bytes, keep_data_uri_mime_types)
+sanitized_svg = filter_svg(svg_bytes, keep_data_url_mime_types)
 ```
 
 
 ### filter_svg
 
-The `filter_svg` function sanitizes SVG data by removing potentially malicious elements and attributes, as well as restricting the allowed MIME types of data: URIs in the SVG. It is a simple wrapper around the underlying Rust function.
+The `filter_svg` function sanitizes SVG data by removing potentially malicious elements and attributes, as well as restricting the allowed MIME types of data: URLs in the SVG. It is a simple wrapper around the underlying Rust function.
 
 #### Parameters
 
 - `svg (bytes)`: The SVG data to be filtered.
-- `keep_data_uri_mime_types (Optional[Dict[str, List[str]]])`: A dictionary that maps MIME types to lists of allowed subtypes for data: URIs in the SVG. If a data: URI's MIME type and subtype are not in the dictionary it will be dropped. If this parameter is None, all data: URIs are dropped.
+- `keep_data_url_mime_types (Optional[Dict[str, List[str]]])`: A dictionary that maps MIME types to lists of allowed subtypes for data: URLs in the SVG. If a data: URL's MIME type and subtype are not in the dictionary it will be dropped. If this parameter is None, all data: URLs are dropped.
 
 #### Returns
 
@@ -64,7 +64,7 @@ Install development dependencies:
 pip install .[dev,testing]
 ```
 
-Build the Rust library:
+Build the Rust library, resulting in a Python module:
 
 ``` bash
 maturin develop
