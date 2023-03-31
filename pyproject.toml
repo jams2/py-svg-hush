@@ -1,5 +1,6 @@
 [project]
 name = "py_svg_hush"
+version = "0.1.0"
 authors = [
     {name = "Joshua Munn", email = "public@elysee-munn.family"},
 ]
@@ -9,6 +10,7 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
 ]
+license = {file = "LICENSE.txt"}
 
 [project.urls]
 homepage = "https://github.com/jams2/py-svg-hush"
