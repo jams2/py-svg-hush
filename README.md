@@ -7,7 +7,7 @@ py-svg-hush is a Python package for sanitizing SVG files using the [svg-hush](ht
 py-svg-hush requires Python 3.7 or later. You can install it using pip:
 
 ``` bash
-pip install py_svg_hush
+pip install py-svg-hush
 ```
 
 ## Usage
