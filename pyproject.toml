@@ -20,10 +20,10 @@ changelog = "https://github.com/jams2/py-svg-hush/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
 dev = [
-    "maturin ~= 0.14.16",
-    "ruff ~= 0.6.7",
+    "maturin==1.7.2",
+    "ruff==0.6.7",
+    "pytest==8.3.3",
 ]
-testing = ["pytest ~= 7.2.2"]
 
 [tool.ruff]
 target-version = "py39"
@@ -52,7 +52,7 @@ testpaths = "tests"
 minversion = 7.0
 
 [build-system]
-requires = ["maturin>=0.14,<0.15"]
+requires = ["maturin==1.7.2"]
 build-backend = "maturin"
 
 [tool.maturin]
