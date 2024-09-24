@@ -21,8 +21,7 @@ changelog = "https://github.com/jams2/py-svg-hush/blob/main/CHANGELOG.md"
 [project.optional-dependencies]
 dev = [
     "maturin ~= 0.14.16",
-    "black ~= 23.1.0",
-    "ruff ~= 0.0.256",
+    "ruff ~= 0.6.7",
 ]
 testing = ["pytest ~= 7.2.2"]
 
@@ -30,6 +29,8 @@ testing = ["pytest ~= 7.2.2"]
 target-version = "py37"
 line-length = 88
 src = ["src", "tests"]
+
+[tool.ruff.lint]
 select = [
     "E",   # pycodestyle
     "F",   # pyflakes
@@ -43,6 +44,7 @@ select = [
 ignore = [
     "UP007",  # use X | Y
     "UP006",  # use dict, list instead of Dict, List
+    "E501",   # line too long
 ]
 
 [tool.pytest.ini_options]
