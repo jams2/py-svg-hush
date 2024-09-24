@@ -1,8 +1,8 @@
-use data_url::DataUrl;
 use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
 use pyo3::types::PyBytes;
 use std::collections::HashMap;
+use svg_hush::data_url_filter::DataUrl;
 use svg_hush::data_url_filter::DataUrlFilterResult;
 use svg_hush::*;
 

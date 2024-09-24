@@ -1,10 +1,10 @@
 [project]
 name = "py_svg_hush"
-version = "0.1.0"
+version = "0.1.1"
 authors = [
     {name = "Joshua Munn", email = "public@elysee-munn.family"},
 ]
-requires-python = ">=3.7"
+requires-python = ">=3.9"
 classifiers = [
     "Programming Language :: Rust",
     "Programming Language :: Python :: Implementation :: CPython",
@@ -20,16 +20,18 @@ changelog = "https://github.com/jams2/py-svg-hush/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
 dev = [
-    "maturin ~= 0.14.16",
-    "black ~= 23.1.0",
-    "ruff ~= 0.0.256",
+    "maturin==1.7.2",
+    "ruff==0.6.7",
+    "pytest==8.3.3",
+    "pip>=24.2",		# maturin needs this for dev builds.
 ]
-testing = ["pytest ~= 7.2.2"]
 
 [tool.ruff]
-target-version = "py37"
+target-version = "py39"
 line-length = 88
 src = ["src", "tests"]
+
+[tool.ruff.lint]
 select = [
     "E",   # pycodestyle
     "F",   # pyflakes
@@ -43,6 +45,7 @@ select = [
 ignore = [
     "UP007",  # use X | Y
     "UP006",  # use dict, list instead of Dict, List
+    "E501",   # line too long
 ]
 
 [tool.pytest.ini_options]
@@ -50,7 +53,7 @@ testpaths = "tests"
 minversion = 7.0
 
 [build-system]
-requires = ["maturin>=0.14,<0.15"]
+requires = ["maturin==1.7.2"]
 build-backend = "maturin"
 
 [tool.maturin]
