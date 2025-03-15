@@ -48,7 +48,7 @@ fn filter_svg(
 }
 
 #[pymodule]
-fn py_svg_hush(_py: Python, m: &PyModule) -> PyResult<()> {
+fn py_svg_hush(_py: Python, m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(filter_svg, m)?)?;
     Ok(())
 }

@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2025-03-15
+
+### Changed
+
+- Upgraded `maturin` → 1.8.3
+- Upgraded `pyo3` → 0.24.0
+- Upgraded `svg-hush` → 0.9.5
+- Upgraded `data-url` → 0.3.1
+- Upgraded `ruff` → 0.11.0
+
 ## [0.1.2] - 2024-09-24
 
 ### Added
