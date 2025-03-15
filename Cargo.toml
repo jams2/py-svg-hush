@@ -1,6 +1,6 @@
 [package]
 name = "py_svg_hush"
-version = "0.1.2"
+version = "0.2.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -9,6 +9,6 @@ name = "py_svg_hush"
 crate-type = ["cdylib"]
 
 [dependencies]
-pyo3 = "0.18.1"
-svg-hush = "0.9.1"
-data-url = "0.2.0"
+pyo3 = "0.24.0"
+svg-hush = "0.9.5"
+data-url = "0.3.1"
