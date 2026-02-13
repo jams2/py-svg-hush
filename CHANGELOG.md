@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-02-13
+
+### Changed
+
+- Upgraded `pyo3` → 0.28.0
+- Upgraded `maturin` → 1.11.5
+- Raised minimum Python version to 3.10 (dropped 3.9)
+- Regenerated GitHub CI config (`maturin generate-ci`)
+  - Updated GitHub Actions: `checkout` v6, `setup-python` v6, `upload-artifact` v6, `download-artifact` v7, `attest-build-provenance` v3, `run-on-arch-action` v3
+  - Replaced unmaintained `addnab/docker-run-action@v3` with direct `docker run` for musllinux x86_64 pytest
+
 ## [0.2.0] - 2025-03-15
 
 ### Changed
