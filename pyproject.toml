@@ -1,6 +1,6 @@
 [project]
 name = "py_svg_hush"
-version = "0.2.0"
+version = "0.3.0"
 authors = [
     {name = "Joshua Munn", email = "public@elysee-munn.family"},
 ]
