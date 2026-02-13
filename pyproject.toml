@@ -59,8 +59,5 @@ testpaths = "tests"
 minversion = 7.0
 
 [build-system]
-requires = ["maturin==1.11.5"]
+requires = ["maturin>=1.0,<2.0"]
 build-backend = "maturin"
-
-[tool.maturin]
-features = ["pyo3/extension-module"]
