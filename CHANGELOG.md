@@ -7,10 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
 ## [0.3.0] - 2026-02-13
 
 ### Changed
 
+- Fixed `py_svg_hush.pyi` signature for `filter_svg` to match runtime default (`keep_data_url_mime_types=None`)
+- Relaxed `build-system` requirement to `maturin>=1.0,<2.0` (instead of pinning a single patch version)
+- Removed explicit `pyo3/extension-module` feature from `tool.maturin` now that modern `maturin` handles extension-module automatically
 - Upgraded `pyo3` → 0.28.0
 - Upgraded `maturin` → 1.11.5
 - Raised minimum Python version to 3.10 (dropped 3.9)
