@@ -30,12 +30,16 @@ jobs:
             target: x86
           - runner: ubuntu-22.04
             target: aarch64
+            interpreters: "-i 3.10 -i 3.11 -i 3.12 -i 3.13 -i 3.14 -i 3.14t -i 3.15 -i 3.15t -i pypy3.11"
           - runner: ubuntu-22.04
             target: armv7
+            interpreters: "-i 3.10 -i 3.11 -i 3.12 -i 3.13 -i 3.14 -i 3.14t -i 3.15 -i 3.15t -i pypy3.11"
           - runner: ubuntu-22.04
             target: s390x
+            interpreters: "-i 3.10 -i 3.11 -i 3.12 -i 3.13 -i 3.14 -i 3.14t -i 3.15 -i 3.15t -i pypy3.11"
           - runner: ubuntu-22.04
             target: ppc64le
+            interpreters: "-i 3.10 -i 3.11 -i 3.12 -i 3.13 -i 3.14 -i 3.14t -i 3.15 -i 3.15t -i pypy3.11"
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
@@ -45,7 +49,10 @@ jobs:
         uses: PyO3/maturin-action@v1
         with:
           target: ${{ matrix.platform.target }}
-          args: --release --out dist --find-interpreter
+          # maturin only discovers interpreters up to 3.14 when cross-compiling, so
+          # the cross-compiled architectures name theirs; x86 and x86_64 build in
+          # PyPA's own images and discover them.
+          args: --release --out dist ${{ matrix.platform.interpreters || '--find-interpreter' }}
           sccache: ${{ !startsWith(github.ref, 'refs/tags/') }}
           manylinux: auto
       - name: Upload wheels
@@ -101,7 +108,9 @@ jobs:
         uses: PyO3/maturin-action@v1
         with:
           target: ${{ matrix.platform.target }}
-          args: --release --out dist --find-interpreter
+          # maturin only discovers interpreters up to 3.14 when cross-compiling, so
+          # name them.
+          args: --release --out dist -i 3.10 -i 3.11 -i 3.12 -i 3.13 -i 3.14 -i 3.14t -i 3.15 -i 3.15t -i pypy3.11
           sccache: ${{ !startsWith(github.ref, 'refs/tags/') }}
           manylinux: musllinux_1_2
       - name: Upload wheels
@@ -134,6 +143,7 @@ jobs:
             pytest
 
   windows:
+    name: windows (${{ matrix.platform.runner }}, ${{ matrix.platform.target }}, ${{ matrix.platform.python_arch }})
     runs-on: ${{ matrix.platform.runner }}
     strategy:
       matrix:
@@ -141,17 +151,25 @@ jobs:
           - runner: windows-latest
             target: x64
             python_arch: x64
+            pypy: true
+            python_versions: "3.10\n3.11\n3.12\n3.13\n3.14\n3.15"
           - runner: windows-latest
             target: x86
             python_arch: x86
+            python_versions: "3.10\n3.11\n3.12\n3.13\n3.14\n3.15"
+          # Windows on Arm has no Python builds before 3.11. PyPy only ships for x64.
           - runner: windows-11-arm
             target: aarch64
             python_arch: arm64
+            python_versions: "3.11\n3.12\n3.13\n3.14\n3.15"
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
-          python-version: 3.x
+          python-version: ${{ matrix.platform.python_versions }}
+          # Allow prereleases, so a release candidate is used while no final
+          # build is published.
+          allow-prereleases: true
           architecture: ${{ matrix.platform.python_arch }}
       - name: Build wheels
         uses: PyO3/maturin-action@v1
@@ -159,11 +177,6 @@ jobs:
           target: ${{ matrix.platform.target }}
           args: --release --out dist --find-interpreter
           sccache: ${{ !startsWith(github.ref, 'refs/tags/') }}
-      - name: Upload wheels
-        uses: actions/upload-artifact@v6
-        with:
-          name: wheels-windows-${{ matrix.platform.target }}
-          path: dist
       - name: pytest
         shell: bash
         run: |
@@ -173,6 +186,41 @@ jobs:
           pip install py_svg_hush --find-links dist --force-reinstall
           pip install pytest
           pytest
+      # The free-threaded and PyPy interpreters get their own steps: installing
+      # python 3.14t or pypy3.11 next to 3.14 or 3.11 makes the plain name
+      # resolve to the new build and hides the regular interpreter.
+      - name: Set up free-threaded Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: |
+            3.14t
+            3.15t
+          allow-prereleases: true
+          architecture: ${{ matrix.platform.python_arch }}
+      - name: Build free-threaded wheels
+        uses: PyO3/maturin-action@v1
+        with:
+          target: ${{ matrix.platform.target }}
+          args: --release --out dist -i python3.14t -i python3.15t
+          sccache: ${{ !startsWith(github.ref, 'refs/tags/') }}
+      - name: Set up PyPy
+        if: ${{ matrix.platform.pypy }}
+        uses: actions/setup-python@v6
+        with:
+          python-version: pypy3.11
+          architecture: ${{ matrix.platform.python_arch }}
+      - name: Build PyPy wheels
+        if: ${{ matrix.platform.pypy }}
+        uses: PyO3/maturin-action@v1
+        with:
+          target: ${{ matrix.platform.target }}
+          args: --release --out dist -i pypy3.11
+          sccache: ${{ !startsWith(github.ref, 'refs/tags/') }}
+      - name: Upload wheels
+        uses: actions/upload-artifact@v6
+        with:
+          name: wheels-windows-${{ matrix.platform.target }}
+          path: dist
 
   macos:
     runs-on: ${{ matrix.platform.runner }}
@@ -187,18 +235,22 @@ jobs:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
-          python-version: 3.x
+          python-version: |
+            3.10
+            3.11
+            3.12
+            3.13
+            3.14
+            3.15
+          # Allow prereleases, so a release candidate is used while no final
+          # build is published.
+          allow-prereleases: true
       - name: Build wheels
         uses: PyO3/maturin-action@v1
         with:
           target: ${{ matrix.platform.target }}
           args: --release --out dist --find-interpreter
           sccache: ${{ !startsWith(github.ref, 'refs/tags/') }}
-      - name: Upload wheels
-        uses: actions/upload-artifact@v6
-        with:
-          name: wheels-macos-${{ matrix.platform.target }}
-          path: dist
       - name: pytest
         run: |
           set -e
@@ -207,6 +259,37 @@ jobs:
           pip install py_svg_hush --find-links dist --force-reinstall
           pip install pytest
           pytest
+      # The free-threaded and PyPy interpreters get their own steps: installing
+      # python 3.14t or pypy3.11 next to 3.14 or 3.11 makes the plain name
+      # resolve to the new build and hides the regular interpreter.
+      - name: Set up free-threaded Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: |
+            3.14t
+            3.15t
+          allow-prereleases: true
+      - name: Build free-threaded wheels
+        uses: PyO3/maturin-action@v1
+        with:
+          target: ${{ matrix.platform.target }}
+          args: --release --out dist -i python3.14t -i python3.15t
+          sccache: ${{ !startsWith(github.ref, 'refs/tags/') }}
+      - name: Set up PyPy
+        uses: actions/setup-python@v6
+        with:
+          python-version: pypy3.11
+      - name: Build PyPy wheels
+        uses: PyO3/maturin-action@v1
+        with:
+          target: ${{ matrix.platform.target }}
+          args: --release --out dist -i pypy3.11
+          sccache: ${{ !startsWith(github.ref, 'refs/tags/') }}
+      - name: Upload wheels
+        uses: actions/upload-artifact@v6
+        with:
+          name: wheels-macos-${{ matrix.platform.target }}
+          path: dist
 
   sdist:
     runs-on: ubuntu-latest

@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Python 3.15 wheels (`cp315`), and the `Programming Language :: Python :: 3.15` classifier
+
+### Changed
+
+- Upgraded `pyo3` → 0.29.3, the first release with Python 3.15 support
+- CI builds `cp315` wheels on every platform: the cross-compiled Linux and musllinux builds name their interpreters (maturin only discovers up to 3.14 when cross-compiling), and the macOS and Windows jobs install 3.10 to 3.15 (3.11 to 3.15 on Windows on Arm, which has no earlier builds)
+- CI also builds free-threaded `3.14t` and `3.15t` wheels on macOS and Windows, and PyPy 3.11 wheels on macOS and Windows x64, so those platforms publish the same interpreters as Linux
+
 ## [0.3.0] - 2026-02-13
 
 ### Changed
