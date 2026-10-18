@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Security
+
+- Refreshed `Cargo.lock` (`cargo update -p url`): `url` 2.5.2 → 2.5.8 moves `idna` 0.5.0 → 1.1.0, which fixes RUSTSEC-2024-0421 (`idna` accepted Punycode labels that decode to no non-ASCII characters)
+
 ## [0.3.0] - 2026-02-13
 
 ### Changed
